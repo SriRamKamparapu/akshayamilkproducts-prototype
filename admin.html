@@ -1,0 +1,2504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akshaya Milk Products | Admin Portal & Operations Hub (Samalkot)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-slate: #0B1120;
+      --bg-panel: #0F172A;
+      --bg-card: #FFFFFF;
+      --bg-main: #F8FAFC;
+      --dairy-blue: #1E3A8A;
+      --dairy-blue-light: #EFF6FF;
+      --pasture-green: #16A34A;
+      --pasture-green-hover: #15803D;
+      --pasture-green-light: #F0FDF4;
+      --gold-accent: #D97706;
+      --gold-light: #FFFBEB;
+      --accent-red: #DC2626;
+      --accent-red-light: #FEF2F2;
+      --border-soft: #E2E8F0;
+      --border-sidebar: #1E293B;
+      --text-dark: #0F172A;
+      --text-muted: #64748B;
+      --text-strike: #94A3B8;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.08);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-full: 9999px;
+      --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* =========================================================================
+       SIDEBAR NAVIGATION (DESKTOP)
+    ========================================================================= */
+    .admin-sidebar {
+      width: 270px;
+      background: var(--bg-panel);
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border-sidebar);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .sidebar-header {
+      padding: 22px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-sidebar);
+    }
+    .sidebar-brand-emblem {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #2563EB 0%, #1E3A8A 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
+      flex-shrink: 0;
+    }
+    .sidebar-brand-emblem svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: #FFFFFF;
+      stroke-width: 2.3;
+    }
+    .sidebar-brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-brand-title {
+      font-size: 15.5px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: #FFFFFF;
+      line-height: 1.2;
+    }
+    .sidebar-brand-sub {
+      font-size: 11px;
+      color: #38BDF8;
+      font-weight: 600;
+    }
+
+    /* Store Status Card in Sidebar */
+    .sidebar-store-status {
+      margin: 16px 16px 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .status-info-left {
+      display: flex;
+      flex-direction: column;
+    }
+    .status-label-small {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .status-text-current {
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+    .status-text-current.online { color: #4ADE80; }
+    .status-text-current.offline { color: #F87171; }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* Toggle Switch */
+    .status-switch {
+      position: relative;
+      display: inline-block;
+      width: 42px;
+      height: 22px;
+    }
+    .status-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .status-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #475569;
+      transition: .3s;
+      border-radius: 22px;
+    }
+    .status-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .status-slider {
+      background-color: var(--pasture-green);
+    }
+    input:checked + .status-slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Navigation Links */
+    .sidebar-nav {
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+    .sidebar-nav-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 10px 10px 4px 10px;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      color: #CBD5E1;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      background: transparent;
+      border: none;
+      width: 100%;
+      cursor: pointer;
+      text-align: left;
+    }
+    .sidebar-link:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFFFFF;
+    }
+    .sidebar-link.active {
+      background: var(--dairy-blue);
+      color: #FFFFFF;
+      font-weight: 800;
+    }
+    .sidebar-link-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sidebar-link svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+    }
+    .sidebar-count-badge {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 1px 7px;
+      border-radius: var(--radius-full);
+      background: #334155;
+      color: #F8FAFC;
+    }
+    .sidebar-link.active .sidebar-count-badge {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    .sidebar-count-badge.alert {
+      background: var(--accent-red);
+      color: #FFFFFF;
+    }
+
+    /* Admin Profile Bottom */
+    .sidebar-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border-sidebar);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #090E1A;
+    }
+    .admin-avatar-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #38BDF8;
+      color: #0F172A;
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .admin-profile-details {
+      flex: 1;
+      overflow: hidden;
+    }
+    .admin-profile-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #FFFFFF;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .admin-profile-sub {
+      font-size: 10.5px;
+      color: #94A3B8;
+    }
+
+    /* =========================================================================
+       MAIN CONTENT STAGE (DESKTOP)
+    ========================================================================= */
+    .admin-main-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      overflow-y: auto;
+    }
+
+    /* Top Action Bar */
+    .top-action-bar {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border-soft);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+    .top-bar-title-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .top-bar-heading {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--dairy-blue);
+      letter-spacing: -0.3px;
+    }
+    .top-bar-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .top-actions-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Notification Bell */
+    .notif-bell-btn {
+      position: relative;
+      background: #F1F5F9;
+      border: 1px solid var(--border-soft);
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-dark);
+      transition: all 0.2s;
+    }
+    .notif-bell-btn:hover {
+      background: #E2E8F0;
+    }
+    .notif-badge-pill {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      background: var(--accent-red);
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: 800;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Customer Store Shortcut */
+    .btn-view-customer-store {
+      background: var(--pasture-green);
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(22, 163, 74, 0.25);
+      transition: background 0.2s;
+    }
+    .btn-view-customer-store:hover {
+      background: var(--pasture-green-hover);
+    }
+
+    /* Stage Container */
+    .admin-stage-container {
+      max-width: 1320px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 28px 60px 28px;
+      flex: 1;
+    }
+
+    /* =========================================================================
+       STAT CARDS (TODAY'S ORDERS, REVENUE, PENDING, PRODUCTS)
+    ========================================================================= */
+    .stats-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    .stat-card-item {
+      background: #FFFFFF;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .stat-card-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .stat-card-details {
+      display: flex;
+      flex-direction: column;
+    }
+    .stat-card-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .stat-card-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .stat-card-trend {
+      font-size: 11.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .stat-card-trend.green { color: var(--pasture-green); }
+    .stat-card-trend.blue { color: var(--dairy-blue); }
+    .stat-card-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .stat-card-icon-box.blue { background: var(--dairy-blue-light); color: var(--dairy-blue); }
+    .stat-card-icon-box.green { background: var(--pasture-green-light); color: var(--pasture-green); }
+    .stat-card-icon-box.gold { background: var(--gold-light); color: var(--gold-accent); }
+    .stat-card-icon-box.purple { background: #FAF5FF; color: #7E22CE; }
+
+    /* Low-Stock Warning Alert Banner */
+    .inventory-alert-box {
+      background: var(--gold-light);
+      border: 1px solid #FCD34D;
+      border-left: 5px solid var(--gold-accent);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .alert-left-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .alert-icon-sym {
+      font-size: 22px;
+    }
+    .alert-head-text {
+      font-size: 14px;
+      font-weight: 800;
+      color: #92400E;
+    }
+    .alert-sub-text {
+      font-size: 12px;
+      color: #B45309;
+    }
+    .btn-quick-replenish {
+      background: #B45309;
+      color: #FFFFFF;
+      border: none;
+      padding: 7px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .btn-quick-replenish:hover {
+      background: #78350F;
+    }
+
+    /* Simulation & Demo Controls */
+    .demo-bar-actions {
+      background: #FFFFFF;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .demo-bar-info h4 {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--dairy-blue);
+    }
+    .demo-bar-info p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .demo-button-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-demo-pill {
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--dairy-blue);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-demo-pill:hover {
+      background: var(--dairy-blue);
+      color: #FFFFFF;
+      border-color: var(--dairy-blue);
+    }
+
+    /* =========================================================================
+       PANELS & TABLES (ORDERS, PRODUCTS, CATEGORIES)
+    ========================================================================= */
+    .admin-panel {
+      display: none;
+    }
+    .admin-panel.active {
+      display: block;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .data-card-wrapper {
+      background: #FFFFFF;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .data-card-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .data-card-title {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--dairy-blue);
+    }
+    .data-card-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .data-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .table-search-input {
+      background: #F8FAFC;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-sm);
+      height: 36px;
+      padding: 0 12px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text-dark);
+      outline: none;
+      min-width: 220px;
+    }
+    .table-search-input:focus {
+      border-color: var(--dairy-blue);
+      background: #FFFFFF;
+    }
+    .table-select-filter {
+      background: #F8FAFC;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-sm);
+      height: 36px;
+      padding: 0 10px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text-dark);
+      outline: none;
+      cursor: pointer;
+    }
+    .btn-create-product {
+      background: var(--pasture-green);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    .btn-create-product:hover {
+      background: var(--pasture-green-hover);
+    }
+
+    /* Data Table */
+    .table-responsive-box {
+      width: 100%;
+      overflow-x: auto;
+    }
+    table.portal-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+    table.portal-table th {
+      background: #F8FAFC;
+      color: var(--text-muted);
+      font-weight: 700;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border-soft);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    table.portal-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-soft);
+      vertical-align: middle;
+      color: var(--text-dark);
+    }
+    table.portal-table tr:hover td {
+      background: #FAFAFA;
+    }
+
+    /* Status Badges */
+    .order-status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .order-status-chip.confirmed { background: #FEF3C7; color: #B45309; }
+    .order-status-chip.paid { background: #DBEAFE; color: #1E40AF; }
+    .order-status-chip.shipped { background: #E0E7FF; color: #4338CA; }
+    .order-status-chip.delivered { background: #DCFCE7; color: #15803D; }
+    .order-status-chip.cancelled { background: #FEE2E2; color: #991B1B; }
+
+    /* Action Icons */
+    .actions-inline {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-table-icon {
+      background: #F1F5F9;
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .btn-table-icon:hover {
+      background: var(--dairy-blue-light);
+      color: var(--dairy-blue);
+      border-color: #BFDBFE;
+    }
+    .btn-table-icon.delete:hover {
+      background: var(--accent-red-light);
+      color: var(--accent-red);
+      border-color: #FECACA;
+    }
+
+    /* Product Thumbnail in Table */
+    .prod-table-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      background: #F1F5F9;
+      border: 1px solid var(--border-soft);
+      flex-shrink: 0;
+    }
+    .prod-table-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Category Cards Grid */
+    .categories-portal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      padding: 22px;
+    }
+    .category-portal-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .category-portal-name {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--dairy-blue);
+    }
+    .category-portal-count {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* =========================================================================
+       MODAL: ADD / EDIT PRODUCT
+    ========================================================================= */
+    .admin-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(2px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      padding: 20px;
+    }
+    .admin-modal-overlay.active {
+      display: flex;
+    }
+    .admin-modal-card {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 620px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .admin-modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--dairy-blue);
+    }
+    .admin-modal-close {
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .admin-modal-body {
+      padding: 20px 24px;
+    }
+    .form-grid-double {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .form-full-row {
+      margin-bottom: 12px;
+    }
+    .modal-field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 5px;
+    }
+    .modal-field-input, .modal-field-select, .modal-field-textarea {
+      width: 100%;
+      background: #F8FAFC;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 13.5px;
+      font-family: inherit;
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal-field-input:focus, .modal-field-select:focus, .modal-field-textarea:focus {
+      border-color: var(--dairy-blue);
+      background: #FFFFFF;
+    }
+    .modal-field-textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+    .admin-modal-footer {
+      padding: 14px 24px;
+      border-top: 1px solid var(--border-soft);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #F8FAFC;
+    }
+    .btn-modal-cancel {
+      background: #E2E8F0;
+      color: var(--text-dark);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Notification Dropdown */
+    .notif-menu-dropdown {
+      position: absolute;
+      top: 55px;
+      right: 28px;
+      width: 320px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      display: none;
+      z-index: 100;
+      overflow: hidden;
+    }
+    .notif-menu-dropdown.show {
+      display: block;
+    }
+    .notif-menu-head {
+      padding: 12px 16px;
+      background: #F8FAFC;
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--dairy-blue);
+      display: flex;
+      justify-content: space-between;
+    }
+    .notif-menu-items {
+      max-height: 250px;
+      overflow-y: auto;
+    }
+    .notif-single-item {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 12px;
+    }
+    .notif-single-item:last-child {
+      border-bottom: none;
+    }
+
+    /* Print Order Label Styles & Layout */
+    .btn-print-order-label {
+      background: #EFF6FF;
+      color: var(--dairy-blue);
+      border: 1px solid #BFDBFE;
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn-print-order-label:hover {
+      background: var(--dairy-blue);
+      color: #FFFFFF;
+      border-color: var(--dairy-blue);
+    }
+    .btn-label-format {
+      background: #F1F5F9;
+      color: var(--text-dark);
+      border: 1px solid var(--border-soft);
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-label-format.active {
+      background: var(--dairy-blue);
+      color: #FFFFFF;
+      border-color: var(--dairy-blue);
+    }
+    .order-labels-preview-scroll {
+      max-height: 540px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      padding: 8px 4px;
+    }
+
+    /* Package Shipping Label Design (A6 & 4x6 in) */
+    .printable-order-label {
+      width: 100%;
+      background: #FFFFFF;
+      color: #0F172A;
+      border: 2px dashed #334155;
+      border-radius: 8px;
+      padding: 20px 22px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      font-family: var(--font-main);
+      box-sizing: border-box;
+      line-height: 1.35;
+    }
+    .printable-order-label.format-4x6 {
+      max-width: 400px; /* standard 4x6 in ratio */
+    }
+    .printable-order-label.format-a6 {
+      max-width: 440px; /* A6 standard */
+    }
+    .label-brand-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .label-brand-emblem {
+      width: 40px;
+      height: 40px;
+      background: #1E3A8A;
+      color: #FFFFFF;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .label-brand-title {
+      font-size: 17px;
+      font-weight: 900;
+      color: #1E3A8A;
+      letter-spacing: 0.5px;
+      line-height: 1.15;
+    }
+    .label-brand-sub {
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+    }
+    .label-brand-tagline {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #16A34A;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+    .label-divider-heavy {
+      height: 3px;
+      background: #0F172A;
+      margin: 8px 0;
+    }
+    .label-divider-solid {
+      height: 1px;
+      background: #CBD5E1;
+      margin: 10px 0;
+    }
+    .label-divider-dashed {
+      border-top: 1.5px dashed #94A3B8;
+      margin: 10px 0;
+    }
+    .label-order-meta-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin: 8px 0;
+    }
+    .label-meta-caption {
+      font-size: 10px;
+      font-weight: 800;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: block;
+    }
+    .label-order-id-bold {
+      font-size: 18px;
+      font-weight: 900;
+      color: #1E3A8A;
+      letter-spacing: -0.3px;
+    }
+    .label-meta-val {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1E293B;
+    }
+    .label-section {
+      margin: 10px 0;
+    }
+    .label-section-heading {
+      font-size: 11px;
+      font-weight: 900;
+      color: #1E3A8A;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .label-cust-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+    .label-cust-phone {
+      font-size: 13px;
+      color: #1E293B;
+      margin: 2px 0 4px 0;
+    }
+    .label-cust-address {
+      font-size: 12.5px;
+      color: #334155;
+      line-height: 1.45;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-top: 4px;
+    }
+    .label-items-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+    .label-items-table th {
+      background: #F1F5F9;
+      padding: 6px 8px;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      border-bottom: 1.5px solid #CBD5E1;
+      color: #334155;
+    }
+    .label-items-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+    .label-payment-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+      margin-bottom: 4px;
+    }
+    .label-payment-chip {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .label-payment-chip.paid {
+      background: #DCFCE7;
+      color: #15803D;
+      border: 1px solid #86EFAC;
+    }
+    .label-payment-chip.cod {
+      background: #FEF3C7;
+      color: #B45309;
+      border: 1px solid #FDE68A;
+    }
+    .label-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      margin-top: 6px;
+      border-top: 1.5px dashed #0F172A;
+      font-size: 13.5px;
+      font-weight: 900;
+    }
+    .label-total-price {
+      font-size: 20px;
+      font-weight: 900;
+      color: #1E3A8A;
+    }
+    .label-barcode-wrap {
+      text-align: center;
+      margin: 12px 0 8px 0;
+      padding-top: 8px;
+      border-top: 1px solid #E2E8F0;
+    }
+    .label-barcode-svg {
+      width: 170px;
+      height: 34px;
+      margin: 0 auto;
+      display: block;
+    }
+    .label-barcode-text {
+      font-family: monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #334155;
+      margin-top: 2px;
+    }
+    .label-footer-msg {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748B;
+      line-height: 1.35;
+      margin-top: 6px;
+    }
+
+    /* Print Media Query: Exclusively render #printLabelContainer */
+    .print-only-container {
+      display: none;
+    }
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      body * {
+        visibility: hidden !important;
+      }
+      #printLabelContainer, #printLabelContainer * {
+        visibility: visible !important;
+      }
+      #printLabelContainer {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        display: block !important;
+        background: #FFFFFF !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .printable-order-label {
+        page-break-after: always !important;
+        break-after: page !important;
+        box-shadow: none !important;
+        border: 2px dashed #000000 !important;
+        margin: 0 auto 16px auto !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+      }
+      .printable-order-label:last-child {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+      @page {
+        size: auto;
+        margin: 6mm;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       SIDEBAR NAVIGATION
+  ========================================================================= -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand-emblem">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8 7 6 10 6 14a6 6 0 0 0 12 0c0-4-2-7-6-12Z"/></svg>
+      </div>
+      <div class="sidebar-brand-text">
+        <span class="sidebar-brand-title">Akshaya Dairy</span>
+        <span class="sidebar-brand-sub">Samalkot Operations Hub</span>
+      </div>
+    </div>
+
+    <!-- Store Online / Offline Toggle -->
+    <div class="sidebar-store-status">
+      <div class="status-info-left">
+        <span class="status-label-small">Store Status</span>
+        <span class="status-text-current online" id="storeLiveStatusText">
+          <span class="status-dot"></span>
+          <span>Online</span>
+        </span>
+      </div>
+      <label class="status-switch" title="Toggle store status for customer storefront">
+        <input type="checkbox" id="sidebarStatusToggle" checked onchange="onStoreStatusToggle(this.checked)">
+        <span class="status-slider"></span>
+      </label>
+    </div>
+
+    <!-- Sidebar Navigation Links -->
+    <nav class="sidebar-nav">
+      <span class="sidebar-nav-title">Management</span>
+
+      <button class="sidebar-link active" id="sideLinkOrders" onclick="switchSection('orders')">
+        <div class="sidebar-link-left">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>Recent Orders</span>
+        </div>
+        <span class="sidebar-count-badge" id="sideOrdersCount">0</span>
+      </button>
+
+      <button class="sidebar-link" id="sideLinkProducts" onclick="switchSection('products')">
+        <div class="sidebar-link-left">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Product Catalog</span>
+        </div>
+        <span class="sidebar-count-badge" id="sideProductsCount">0</span>
+      </button>
+
+      <button class="sidebar-link" id="sideLinkCategories" onclick="switchSection('categories')">
+        <div class="sidebar-link-left">
+          <svg viewBox="0 0 24 24" fill="none"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          <span>Categories</span>
+        </div>
+        <span class="sidebar-count-badge" id="sideCategoriesCount">0</span>
+      </button>
+
+      <span class="sidebar-nav-title" style="margin-top:10px;">Inventory</span>
+
+      <button class="sidebar-link" id="sideLinkAlerts" onclick="switchSection('alerts')">
+        <div class="sidebar-link-left">
+          <svg viewBox="0 0 24 24" fill="none"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Low Stock Alerts</span>
+        </div>
+        <span class="sidebar-count-badge alert" id="sideLowStockCount">0</span>
+      </button>
+    </nav>
+
+    <!-- Admin Profile at Bottom -->
+    <div class="sidebar-footer">
+      <div class="admin-avatar-box">SR</div>
+      <div class="admin-profile-details">
+        <div class="admin-profile-name">Sriram R.</div>
+        <div class="admin-profile-sub">Samalkot Hub Manager</div>
+      </div>
+    </div>
+  </aside>
+
+
+  <!-- =========================================================================
+       MAIN DASHBOARD STAGE
+  ========================================================================= -->
+  <div class="admin-main-wrap">
+
+    <!-- Top Action Bar -->
+    <header class="top-action-bar">
+      <div class="top-bar-title-group">
+        <h1 class="top-bar-heading" id="topBarHeading">Orders & Operations Dashboard</h1>
+        <span class="top-bar-sub">Real-time dairy fulfillment and catalog administration for Samalkot, AP</span>
+      </div>
+
+      <div class="top-actions-right">
+        <!-- Notification Bell -->
+        <button class="notif-bell-btn" onclick="toggleNotifMenu()" title="Recent Notifications">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-badge-pill" id="notifBadgeCounter">3</span>
+        </button>
+
+        <!-- Notification Dropdown Menu -->
+        <div class="notif-menu-dropdown" id="notifMenu">
+          <div class="notif-menu-head">
+            <span>Recent Orders Activity</span>
+            <span style="font-size:11px; color:#64748B;">Live LocalStorage</span>
+          </div>
+          <div class="notif-menu-items" id="notifItemList">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Open Customer Storefront Link -->
+        <a href="index.html" class="btn-view-customer-store" target="_blank" title="Open customer website in new tab">
+          <span>View Customer Store</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="admin-stage-container">
+
+      <!-- Stat Cards Row -->
+      <section class="stats-cards-grid">
+        <div class="stat-card-item">
+          <div class="stat-card-details">
+            <span class="stat-card-label">Today's Orders</span>
+            <span class="stat-card-value" id="statOrdersNumber">0</span>
+            <span class="stat-card-trend green">↑ 18% vs yesterday</span>
+          </div>
+          <div class="stat-card-icon-box blue">📦</div>
+        </div>
+
+        <div class="stat-card-item">
+          <div class="stat-card-details">
+            <span class="stat-card-label">Today's Revenue</span>
+            <span class="stat-card-value" id="statRevenueNumber">₹0</span>
+            <span class="stat-card-trend green">↑ ₹420 today</span>
+          </div>
+          <div class="stat-card-icon-box green">₹</div>
+        </div>
+
+        <div class="stat-card-item">
+          <div class="stat-card-details">
+            <span class="stat-card-label">Pending Orders</span>
+            <span class="stat-card-value" id="statPendingNumber">0</span>
+            <span class="stat-card-trend blue">Awaiting dispatch</span>
+          </div>
+          <div class="stat-card-icon-box gold">⏳</div>
+        </div>
+
+        <div class="stat-card-item">
+          <div class="stat-card-details">
+            <span class="stat-card-label">Active Products</span>
+            <span class="stat-card-value" id="statProductsNumber">0</span>
+            <span class="stat-card-trend green">100% farm pure</span>
+          </div>
+          <div class="stat-card-icon-box purple">🥛</div>
+        </div>
+      </section>
+
+      <!-- Inventory Low-Stock Alert Banner -->
+      <div class="inventory-alert-box" id="lowStockAlertBanner" style="display:none;">
+        <div class="alert-left-content">
+          <span class="alert-icon-sym">⚠️</span>
+          <div>
+            <div class="alert-head-text">Low Stock Alert on Fresh Dairy Products</div>
+            <div class="alert-sub-text" id="lowStockDetailsText">Items with 15 or fewer units in Samalkot cold storage.</div>
+          </div>
+        </div>
+        <button class="btn-quick-replenish" onclick="replenishAllLowStock()">+ Restock All Low Items (+25 units)</button>
+      </div>
+
+      <!-- Quick Prototype Demo Simulation Controls -->
+      <div class="demo-bar-actions">
+        <div class="demo-bar-info">
+          <h4>🧪 Client Presentation Tools</h4>
+          <p>Instantly test store synchronization without manual input.</p>
+        </div>
+        <div class="demo-button-group">
+          <button class="btn-demo-pill" onclick="simulateNewIncomingOrder()">+ Simulate Incoming Order</button>
+          <button class="btn-demo-pill" onclick="loadMoreProducts()">+ Load Extended Catalog (Palakova, Kulfi...)</button>
+          <button class="btn-demo-pill" onclick="resetTo10StarterItems()">↺ Reset Starter (10 Items)</button>
+        </div>
+      </div>
+
+
+      <!-- =====================================================================
+           SECTION 1: RECENT ORDERS TABLE
+      ====================================================================== -->
+      <section class="admin-panel active" id="section-orders">
+        <div class="data-card-wrapper">
+          <div class="data-card-header">
+            <div>
+              <h2 class="data-card-title">Recent Customer Dairy Orders</h2>
+              <p class="data-card-sub">Placed from Samalkot Town, Station Road, and Peddapuram Road areas.</p>
+            </div>
+
+            <div class="data-controls-row">
+              <input type="text" class="table-search-input" id="orderSearchFilter" placeholder="Search Order ID, Customer name..." oninput="renderOrdersTable()">
+              
+              <select class="table-select-filter" id="orderStatusFilter" onchange="renderOrdersTable()">
+                <option value="All">All Statuses</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Paid">Paid</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+
+              <button class="btn-create-product" id="btnBatchPrintLabels" style="display:none; background:var(--dairy-blue); padding:6px 14px; font-size:12px; font-weight:700;" onclick="printSelectedOrderLabels()">
+                🖨️ Print Selected Labels (<span id="batchCountBadge">0</span>)
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive-box">
+            <table class="portal-table">
+              <thead>
+                <tr>
+                  <th style="width:36px; text-align:center;">
+                    <input type="checkbox" id="selectAllOrdersChk" onchange="toggleSelectAllOrders(this.checked)" title="Select All for Printing" style="cursor:pointer; accent-color:var(--dairy-blue);">
+                  </th>
+                  <th>Order ID</th>
+                  <th>Customer & Address</th>
+                  <th>Items Ordered</th>
+                  <th>Total Amount</th>
+                  <th>Payment Mode</th>
+                  <th>Order Status</th>
+                  <th>Date & Time</th>
+                  <th>Update Status</th>
+                  <th>Package Label</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =====================================================================
+           SECTION 2: PRODUCT MANAGEMENT (CRUD)
+      ====================================================================== -->
+      <section class="admin-panel" id="section-products">
+        <div class="data-card-wrapper">
+          <div class="data-card-header">
+            <div>
+              <h2 class="data-card-title">Product Catalog Management</h2>
+              <p class="data-card-sub">Manage prices, MRPs, regional names, units, stock quantities, and featured status.</p>
+            </div>
+
+            <div class="data-controls-row">
+              <input type="text" class="table-search-input" id="productSearchFilter" placeholder="Search product name..." oninput="renderProductsTable()">
+              
+              <select class="table-select-filter" id="productCategoryFilter" onchange="renderProductsTable()">
+                <option value="All">All Categories</option>
+              </select>
+
+              <button class="btn-create-product" onclick="openAddModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add New Product
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive-box">
+            <table class="portal-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Selling Price</th>
+                  <th>MRP</th>
+                  <th>Unit</th>
+                  <th>Stock Quantity</th>
+                  <th>Featured</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =====================================================================
+           SECTION 3: CATEGORY MANAGEMENT
+      ====================================================================== -->
+      <section class="admin-panel" id="section-categories">
+        <div class="data-card-wrapper">
+          <div class="data-card-header">
+            <div>
+              <h2 class="data-card-title">Dairy Categories</h2>
+              <p class="data-card-sub">Category filter chips available on customer store.</p>
+            </div>
+
+            <div class="data-controls-row">
+              <input type="text" class="table-search-input" id="newCategoryTextInput" placeholder="New Category name (e.g. Organic Milk)...">
+              <button class="btn-create-product" onclick="submitNewCategory()">+ Add Category</button>
+            </div>
+          </div>
+
+          <div class="categories-portal-grid" id="categoryGridCards">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =====================================================================
+           SECTION 4: LOW STOCK ALERTS
+      ====================================================================== -->
+      <section class="admin-panel" id="section-alerts">
+        <div class="data-card-wrapper">
+          <div class="data-card-header">
+            <div>
+              <h2 class="data-card-title">Inventory & Low Stock Monitor</h2>
+              <p class="data-card-sub">Products with 15 or fewer units in Samalkot cold storage.</p>
+            </div>
+            <button class="btn-create-product" onclick="replenishAllLowStock()">+ Restock All Low Items (+25 units)</button>
+          </div>
+
+          <div class="table-responsive-box">
+            <table class="portal-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Current Stock</th>
+                  <th>Selling Price</th>
+                  <th>Unit</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="lowStockTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: ADD / EDIT PRODUCT
+  ========================================================================= -->
+  <div class="admin-modal-overlay" id="productModal">
+    <div class="admin-modal-card">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title" id="modalTitle">Add New Product</h3>
+        <button class="admin-modal-close" onclick="closeModal()">✕</button>
+      </div>
+
+      <div class="admin-modal-body">
+        <form id="productCrudForm" onsubmit="handleProductSubmit(event)">
+          <input type="hidden" id="crudProductId">
+
+          <div class="form-grid-double">
+            <div>
+              <label class="modal-field-label">Product Name (English) *</label>
+              <input type="text" class="modal-field-input" id="crudName" required placeholder="e.g. Taaja Paalu, Neyyi">
+            </div>
+            <div>
+              <label class="modal-field-label">Regional Name (Telugu) *</label>
+              <input type="text" class="modal-field-input" id="crudRegional" required placeholder="e.g. తాజా పాలు, నెయ్యి">
+            </div>
+          </div>
+
+          <div class="form-grid-double">
+            <div>
+              <label class="modal-field-label">Category *</label>
+              <select class="modal-field-select" id="crudCategory" required>
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+            <div>
+              <label class="modal-field-label">Unit *</label>
+              <input type="text" class="modal-field-input" id="crudUnit" required placeholder="e.g. 1L, 500g, 200g, 500ml">
+            </div>
+          </div>
+
+          <div class="form-grid-double">
+            <div>
+              <label class="modal-field-label">Selling Price (₹ - Customer Pays) *</label>
+              <input type="number" class="modal-field-input" id="crudPrice" required min="1" step="any" placeholder="65" oninput="updateModalDiscountPreview()">
+            </div>
+            <div>
+              <label class="modal-field-label">MRP (Maximum Retail Price ₹) *</label>
+              <input type="number" class="modal-field-input" id="crudMrp" required min="1" step="any" placeholder="75" oninput="updateModalDiscountPreview()">
+            </div>
+          </div>
+          <div id="modalDiscountPreview" style="font-size:12px; font-weight:700; color:var(--pasture-green); margin:-4px 0 12px 0;"></div>
+
+          <div class="form-grid-double">
+            <div>
+              <label class="modal-field-label">Initial Stock Quantity *</label>
+              <input type="number" class="modal-field-input" id="crudStock" required min="0" placeholder="40">
+            </div>
+            <div style="display:flex; flex-direction:column; justify-content:center;">
+              <label class="modal-field-label">Featured on Home Screen?</label>
+              <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; cursor:pointer;">
+                <input type="checkbox" id="crudFeatured" style="accent-color:var(--pasture-green); width:18px; height:18px;">
+                Show in Featured Banners
+              </label>
+            </div>
+          </div>
+
+          <div class="form-full-row">
+            <label class="modal-field-label">Image URL</label>
+            <input type="url" class="modal-field-input" id="crudImage" placeholder="https://images.unsplash.com/... or leave blank for vector SVG">
+          </div>
+
+          <div class="form-full-row">
+            <label class="modal-field-label">Description</label>
+            <textarea class="modal-field-textarea" id="crudDescription" placeholder="Freshly collected and pasteurized morning dairy..."></textarea>
+          </div>
+
+          <div class="form-grid-double">
+            <div>
+              <label class="modal-field-label">Ingredients</label>
+              <input type="text" class="modal-field-input" id="crudIngredients" placeholder="100% Pure Buffalo Milk solids">
+            </div>
+            <div>
+              <label class="modal-field-label">Storage Instructions</label>
+              <input type="text" class="modal-field-input" id="crudStorage" placeholder="Keep refrigerated below 4°C">
+            </div>
+          </div>
+
+          <div class="admin-modal-footer">
+            <button type="button" class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn-create-product" id="btnSaveProduct">Save Product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: ORDER PACKAGE LABEL PRINTING (A6 & 4x6 INCH)
+  ========================================================================= -->
+  <div class="admin-modal-overlay" id="orderLabelModal">
+    <div class="admin-modal-card" style="max-width:540px;">
+      <div class="admin-modal-header">
+        <div>
+          <h3 class="admin-modal-title">Print Package Delivery Label</h3>
+          <p style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">Physical package label for Samalkot dairy fulfillment</p>
+        </div>
+        <button class="admin-modal-close" onclick="closeOrderLabelModal()">✕</button>
+      </div>
+
+      <div class="admin-modal-body" style="background:#F1F5F9; padding:18px;">
+        <!-- Format Selector -->
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; background:#FFFFFF; padding:10px 14px; border-radius:var(--radius-sm); border:1px solid var(--border-soft);">
+          <span style="font-size:12.5px; font-weight:700; color:var(--text-dark);">Label Paper Size:</span>
+          <div style="display:flex; gap:6px;">
+            <button type="button" class="btn-label-format active" id="btnFmt4x6" onclick="setLabelFormat('format-4x6')">4 × 6 in (Thermal)</button>
+            <button type="button" class="btn-label-format" id="btnFmtA6" onclick="setLabelFormat('format-a6')">A6 (105 × 148 mm)</button>
+          </div>
+        </div>
+
+        <!-- Scrollable Label Preview -->
+        <div class="order-labels-preview-scroll" id="orderLabelPreviewBox">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <div class="admin-modal-footer" style="justify-content:space-between;">
+        <span style="font-size:11.5px; color:var(--text-muted); align-self:center;">
+          Print layout contains only the physical label.
+        </span>
+        <div style="display:flex; gap:10px;">
+          <button type="button" class="btn-modal-cancel" onclick="closeOrderLabelModal()">Cancel</button>
+          <button type="button" class="btn-create-product" style="display:inline-flex; align-items:center; gap:6px; font-weight:800;" onclick="triggerPrintLabel()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print Label Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated Hidden Print Root (only visible during print) -->
+  <div id="printLabelContainer" class="print-only-container"></div>
+
+  <!-- Load Shared Data API -->
+  <script src="shared-data.js"></script>
+
+  <script>
+    /* =========================================================================
+       ADMIN DASHBOARD CONTROLLER
+    ========================================================================= */
+    let currentSection = 'orders';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      syncDashboard();
+      initOnlineToggle();
+
+      window.addEventListener('akshaya:productsUpdated', syncDashboard);
+      window.addEventListener('akshaya:ordersUpdated', syncDashboard);
+      window.addEventListener('akshaya:categoriesUpdated', syncDashboard);
+      window.addEventListener('akshaya:statusChanged', initOnlineToggle);
+      window.addEventListener('akshaya:reset', syncDashboard);
+    });
+
+    function syncDashboard() {
+      renderStatCards();
+      renderOrdersTable();
+      renderProductsTable();
+      renderCategoriesPanel();
+      populateCategoryDropdowns();
+      checkLowStockAlerts();
+      renderNotifications();
+    }
+
+    /* Store Online / Offline Toggle */
+    function initOnlineToggle() {
+      const isOnline = AkshayaStore.isStoreOnline();
+      const toggle = document.getElementById('sidebarStatusToggle');
+      const text = document.getElementById('storeLiveStatusText');
+
+      if (toggle) toggle.checked = isOnline;
+      if (text) {
+        text.className = isOnline ? 'status-text-current online' : 'status-text-current offline';
+        text.innerHTML = `<span class="status-dot"></span><span>${isOnline ? 'Online' : 'Offline'}</span>`;
+      }
+    }
+
+    function onStoreStatusToggle(checked) {
+      AkshayaStore.setStoreOnline(checked);
+      initOnlineToggle();
+    }
+
+    /* Sidebar Section Switcher */
+    function switchSection(sectionId) {
+      currentSection = sectionId;
+
+      document.querySelectorAll('.sidebar-link').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+
+      const linkMap = {
+        'orders': 'sideLinkOrders',
+        'products': 'sideLinkProducts',
+        'categories': 'sideLinkCategories',
+        'alerts': 'sideLinkAlerts'
+      };
+
+      const titleMap = {
+        'orders': 'Orders & Operations Dashboard',
+        'products': 'Product Catalog Management',
+        'categories': 'Dairy Category Management',
+        'alerts': 'Inventory & Low Stock Alerts'
+      };
+
+      const linkBtn = document.getElementById(linkMap[sectionId]);
+      const panel = document.getElementById(`section-${sectionId}`);
+      if (linkBtn) linkBtn.classList.add('active');
+      if (panel) panel.classList.add('active');
+
+      document.getElementById('topBarHeading').textContent = titleMap[sectionId] || 'Admin Portal';
+    }
+
+    /* Stat Cards Computation */
+    function renderStatCards() {
+      const orders = AkshayaStore.getOrders();
+      const products = AkshayaStore.getProducts();
+      const categories = AkshayaStore.getCategories();
+
+      const revenue = orders.reduce((sum, o) => sum + (o.amount || 0), 0);
+      const pending = orders.filter(o => o.status === 'Confirmed' || o.status === 'Shipped').length;
+      const lowStockCount = products.filter(p => (p.stock || 0) <= 15).length;
+
+      document.getElementById('statOrdersNumber').textContent = orders.length;
+      document.getElementById('statRevenueNumber').textContent = `₹${revenue.toLocaleString('en-IN')}`;
+      document.getElementById('statPendingNumber').textContent = pending;
+      document.getElementById('statProductsNumber').textContent = products.length;
+
+      // Sidebar badges
+      document.getElementById('sideOrdersCount').textContent = orders.length;
+      document.getElementById('sideProductsCount').textContent = products.length;
+      document.getElementById('sideCategoriesCount').textContent = categories.filter(c => c !== 'All').length;
+      document.getElementById('sideLowStockCount').textContent = lowStockCount;
+    }
+
+    /* Low-Stock Monitor */
+    function checkLowStockAlerts() {
+      const products = AkshayaStore.getProducts();
+      const low = products.filter(p => (p.stock || 0) <= 15);
+      const banner = document.getElementById('lowStockAlertBanner');
+
+      if (low.length > 0) {
+        banner.style.display = 'flex';
+        const names = low.map(p => `${p.name} (${p.stock} units left)`).join(', ');
+        document.getElementById('lowStockDetailsText').textContent = `Attention needed on: ${names}`;
+      } else {
+        banner.style.display = 'none';
+      }
+
+      // Render low stock table
+      const tbody = document.getElementById('lowStockTableBody');
+      if (low.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-muted);">All dairy products have healthy stock levels!</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = low.map(p => `
+        <tr>
+          <td><strong>${p.name}</strong> (${p.regionalName})</td>
+          <td><span style="background:var(--dairy-blue-light); color:var(--dairy-blue); font-weight:700; padding:2px 8px; border-radius:4px;">${p.category}</span></td>
+          <td><strong style="color:var(--accent-red);">${p.stock} units</strong></td>
+          <td>₹${p.price}</td>
+          <td>${p.unit}</td>
+          <td><span class="order-status-chip cancelled">Critical</span></td>
+          <td><button class="btn-create-product" style="padding:4px 10px; font-size:11.5px;" onclick="restockSingle('${p.id}', 25)">+ Restock 25</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function restockSingle(id, qty) {
+      const p = AkshayaStore.getProductById(id);
+      if (p) {
+        p.stock = (p.stock || 0) + qty;
+        AkshayaStore.updateProduct(id, { stock: p.stock });
+        syncDashboard();
+      }
+    }
+
+    function replenishAllLowStock() {
+      const products = AkshayaStore.getProducts();
+      let updated = 0;
+      products.forEach(p => {
+        if ((p.stock || 0) <= 15) {
+          p.stock = (p.stock || 0) + 25;
+          updated++;
+        }
+      });
+      AkshayaStore.saveProducts(products);
+      alert(`Restocked +25 units for ${updated} products in Samalkot hub!`);
+      syncDashboard();
+    }
+
+    /* Orders Management Table */
+    function renderOrdersTable() {
+      const tbody = document.getElementById('ordersTableBody');
+      let orders = AkshayaStore.getOrders();
+
+      const q = (document.getElementById('orderSearchFilter').value || '').toLowerCase().trim();
+      const status = document.getElementById('orderStatusFilter').value;
+
+      if (status !== 'All') {
+        orders = orders.filter(o => o.status.toLowerCase() === status.toLowerCase());
+      }
+
+      if (q) {
+        orders = orders.filter(o => 
+          o.id.toLowerCase().includes(q) ||
+          (o.customer && o.customer.name.toLowerCase().includes(q)) ||
+          (o.customer && o.customer.phone.includes(q))
+        );
+      }
+
+      if (orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:32px; color:var(--text-muted);">No orders matching current criteria.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = orders.map(ord => {
+        const statusClass = (ord.status || 'confirmed').toLowerCase();
+        const itemsText = (ord.items || []).map(i => `${i.name} (${i.qty} × ${i.unit || 'unit'})`).join(', ');
+        const custAddr = ord.customer ? `${ord.customer.address}, ${ord.customer.landmark ? ord.customer.landmark + ', ' : ''}PIN: ${ord.customer.pincode || '533440'}` : '';
+
+        return `
+          <tr>
+            <td style="text-align:center;">
+              <input type="checkbox" class="order-select-chk" value="${ord.id}" onchange="updateBatchPrintBtn()" style="cursor:pointer; accent-color:var(--dairy-blue);">
+            </td>
+            <td style="font-weight:800; color:var(--dairy-blue);">#${ord.id}</td>
+            <td>
+              <div style="font-weight:700;">${ord.customer ? ord.customer.name : 'Customer'}</div>
+              <div style="font-size:11.5px; color:var(--text-muted);">${ord.customer ? ord.customer.phone : ''}</div>
+              <div style="font-size:11px; color:#475569; max-width:210px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${custAddr}">
+                ${custAddr}
+              </div>
+            </td>
+            <td style="max-width:220px; font-weight:600; font-size:12.5px;">${itemsText}</td>
+            <td><strong style="font-size:14px; color:var(--dairy-blue);">₹${ord.amount}</strong></td>
+            <td>
+              <span style="font-size:12px; font-weight:700;">${ord.paymentMethod || 'UPI'}</span>
+              <span style="font-size:10px; display:block; color:${(ord.paymentStatus || '').toLowerCase().includes('paid') ? 'var(--pasture-green)' : 'var(--gold-accent)'}; font-weight:800;">
+                ${ord.paymentStatus || (ord.paymentMethod.includes('Cash') ? 'Pending (COD)' : 'Paid')}
+              </span>
+            </td>
+            <td><span class="order-status-chip ${statusClass}">${ord.status}</span></td>
+            <td style="font-size:11.5px; color:var(--text-muted); white-space:nowrap;">${ord.date || 'Recent'}</td>
+            <td>
+              <select class="table-select-filter" style="height:30px; font-size:12px; font-weight:700;" onchange="updateStatus('${ord.id}', this.value)">
+                <option value="Confirmed" ${ord.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                <option value="Paid" ${ord.status === 'Paid' ? 'selected' : ''}>Paid</option>
+                <option value="Shipped" ${ord.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                <option value="Delivered" ${ord.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                <option value="Cancelled" ${ord.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+              </select>
+            </td>
+            <td>
+              <button class="btn-print-order-label" onclick="openOrderLabelPrintModal('${ord.id}')" title="Print Physical Packaging Label">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                <span>Print Label</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+      updateBatchPrintBtn();
+    }
+
+    function updateStatus(id, newStatus) {
+      AkshayaStore.updateOrderStatus(id, newStatus);
+      syncDashboard();
+    }
+
+    /* Product Management Table & CRUD */
+    function renderProductsTable() {
+      const tbody = document.getElementById('productsTableBody');
+      let products = AkshayaStore.getProducts();
+
+      const q = (document.getElementById('productSearchFilter').value || '').toLowerCase().trim();
+      const cat = document.getElementById('productCategoryFilter').value;
+
+      if (cat !== 'All') {
+        products = products.filter(p => p.category.toLowerCase() === cat.toLowerCase());
+      }
+
+      if (q) {
+        products = products.filter(p => 
+          p.name.toLowerCase().includes(q) ||
+          p.regionalName.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q)
+        );
+      }
+
+      if (products.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:32px; color:var(--text-muted);">No products found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = products.map(p => {
+        const fallback = p.fallbackType || AkshayaStore.guessFallback(p.category);
+        const isLow = (p.stock || 0) <= 15;
+
+        return `
+          <tr>
+            <td>
+              <div class="prod-table-info">
+                <img class="prod-table-thumb" src="${p.image}" alt="${p.name}" onerror="this.onerror=null; this.src='${AkshayaStore.getFallbackSvg(fallback)}'">
+                <div>
+                  <strong style="color:var(--dairy-blue);">${p.name}</strong>
+                  <div style="font-size:11.5px; color:var(--text-muted);">${p.regionalName}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span style="background:var(--dairy-blue-light); color:var(--dairy-blue); font-weight:700; font-size:11px; padding:3px 8px; border-radius:4px;">
+                ${p.category}
+              </span>
+            </td>
+            <td><strong style="color:var(--pasture-green); font-size:14px;">₹${p.price}</strong></td>
+            <td>
+              ${p.mrp && p.mrp > p.price ? `
+                <span style="color:var(--text-strike); text-decoration:line-through; font-size:12px;">₹${p.mrp}</span>
+                <span style="background:var(--pasture-green-light); color:var(--pasture-green); font-size:10.5px; font-weight:800; padding:2px 6px; border-radius:4px; margin-left:4px;">
+                  ${AkshayaStore.calculateDiscount(p.mrp, p.price)}% OFF
+                </span>
+              ` : `
+                <span style="font-size:12px; color:var(--text-muted);">₹${p.price}</span>
+              `}
+            </td>
+            <td><span style="font-weight:600; font-size:12px;">${p.unit}</span></td>
+            <td>
+              <span style="font-weight:800; color:${isLow ? 'var(--accent-red)' : 'var(--text-dark)'};">${p.stock} units</span>
+              ${isLow ? '<span style="font-size:10px; color:var(--accent-red); display:block; font-weight:700;">Low Stock</span>' : ''}
+            </td>
+            <td>
+              <input type="checkbox" ${p.featured ? 'checked' : ''} onchange="toggleFeatured('${p.id}', this.checked)" style="accent-color:var(--pasture-green); width:16px; height:16px; cursor:pointer;">
+            </td>
+            <td>
+              <div class="actions-inline">
+                <button class="btn-table-icon" title="Edit Product" onclick="openEditModal('${p.id}')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+                <button class="btn-table-icon delete" title="Delete Product" onclick="deleteProd('${p.id}')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function toggleFeatured(id, val) {
+      AkshayaStore.updateProduct(id, { featured: val });
+      syncDashboard();
+    }
+
+    function deleteProd(id) {
+      const p = AkshayaStore.getProductById(id);
+      if (!p) return;
+      if (confirm(`Delete "${p.name}" from dairy catalog?`)) {
+        AkshayaStore.deleteProduct(id);
+        syncDashboard();
+      }
+    }
+
+    /* Modal Form for Products */
+    function openAddModal() {
+      document.getElementById('modalTitle').textContent = 'Add New Dairy Product';
+      document.getElementById('btnSaveProduct').textContent = 'Add to Catalog';
+      document.getElementById('productCrudForm').reset();
+      document.getElementById('crudProductId').value = '';
+      document.getElementById('crudPrice').value = '';
+      document.getElementById('crudMrp').value = '';
+      document.getElementById('crudFeatured').checked = true;
+      updateModalDiscountPreview();
+      document.getElementById('productModal').classList.add('active');
+    }
+
+    function openEditModal(id) {
+      const p = AkshayaStore.getProductById(id);
+      if (!p) return;
+
+      document.getElementById('modalTitle').textContent = `Edit Product: ${p.name}`;
+      document.getElementById('btnSaveProduct').textContent = 'Update Product';
+      document.getElementById('crudProductId').value = p.id;
+
+      document.getElementById('crudName').value = p.name;
+      document.getElementById('crudRegional').value = p.regionalName;
+      document.getElementById('crudCategory').value = p.category;
+      document.getElementById('crudUnit').value = p.unit;
+      document.getElementById('crudPrice').value = p.price;
+      document.getElementById('crudMrp').value = p.mrp || p.price;
+      document.getElementById('crudStock').value = p.stock || 25;
+      document.getElementById('crudFeatured').checked = !!p.featured;
+      document.getElementById('crudImage').value = p.image || '';
+      document.getElementById('crudDescription').value = p.description || '';
+      document.getElementById('crudIngredients').value = p.ingredients || '';
+      document.getElementById('crudStorage').value = p.storage || '';
+
+      updateModalDiscountPreview();
+      document.getElementById('productModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('productModal').classList.remove('active');
+    }
+
+    function updateModalDiscountPreview() {
+      const priceVal = document.getElementById('crudPrice').value;
+      const mrpVal = document.getElementById('crudMrp').value;
+      const preview = document.getElementById('modalDiscountPreview');
+      if (!preview) return;
+
+      if (!priceVal && !mrpVal) {
+        preview.textContent = '';
+        return;
+      }
+
+      const price = parseFloat(priceVal);
+      const mrp = parseFloat(mrpVal);
+
+      if (!isNaN(price) && !isNaN(mrp)) {
+        if (mrp < price) {
+          preview.style.color = 'var(--accent-red)';
+          preview.textContent = '⚠️ MRP must be greater than or equal to Selling Price';
+        } else if (mrp > price) {
+          const pct = AkshayaStore.calculateDiscount(mrp, price);
+          preview.style.color = 'var(--pasture-green)';
+          preview.textContent = `✓ Customer Discount: ${pct}% OFF (Customer saves ₹${(mrp - price).toFixed(0)})`;
+        } else {
+          preview.style.color = 'var(--text-muted)';
+          preview.textContent = 'Regular Price: No discount (MRP equals Selling Price)';
+        }
+      } else {
+        preview.textContent = '';
+      }
+    }
+
+    function handleProductSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('crudProductId').value;
+      const category = document.getElementById('crudCategory').value;
+      const price = parseFloat(document.getElementById('crudPrice').value);
+      const mrp = parseFloat(document.getElementById('crudMrp').value);
+
+      if (isNaN(price) || price <= 0) {
+        alert("Please enter a valid Selling Price.");
+        return;
+      }
+      if (isNaN(mrp) || mrp < price) {
+        alert(`MRP (₹${mrp}) must never be lower than Selling Price (₹${price}). Please enter an MRP equal to or higher than the Selling Price.`);
+        return;
+      }
+
+      const payload = {
+        name: document.getElementById('crudName').value.trim(),
+        regionalName: document.getElementById('crudRegional').value.trim(),
+        category: category,
+        unit: document.getElementById('crudUnit').value.trim(),
+        price: price,
+        mrp: mrp,
+        stock: parseInt(document.getElementById('crudStock').value, 10),
+        featured: document.getElementById('crudFeatured').checked,
+        image: document.getElementById('crudImage').value.trim() || AkshayaStore.getFallbackSvg(AkshayaStore.guessFallback(category)),
+        description: document.getElementById('crudDescription').value.trim(),
+        ingredients: document.getElementById('crudIngredients').value.trim(),
+        storage: document.getElementById('crudStorage').value.trim()
+      };
+
+      if (id) {
+        AkshayaStore.updateProduct(id, payload);
+      } else {
+        AkshayaStore.addProduct(payload);
+      }
+
+      closeModal();
+      syncDashboard();
+    }
+
+    /* Category Management */
+    function populateCategoryDropdowns() {
+      const categories = AkshayaStore.getCategories();
+
+      const filter = document.getElementById('productCategoryFilter');
+      const cur = filter.value;
+      filter.innerHTML = `<option value="All">All Categories</option>` + 
+        categories.filter(c => c !== 'All').map(c => `<option value="${c}">${c}</option>`).join('');
+      filter.value = cur || 'All';
+
+      const crudCat = document.getElementById('crudCategory');
+      crudCat.innerHTML = categories.filter(c => c !== 'All').map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    function renderCategoriesPanel() {
+      const grid = document.getElementById('categoryGridCards');
+      const categories = AkshayaStore.getCategories().filter(c => c !== 'All');
+      const products = AkshayaStore.getProducts();
+
+      grid.innerHTML = categories.map(cat => {
+        const count = products.filter(p => p.category.toLowerCase() === cat.toLowerCase()).length;
+        return `
+          <div class="category-portal-card">
+            <div>
+              <div class="category-portal-name">${cat}</div>
+              <div class="category-portal-count">${count} Active Products</div>
+            </div>
+            <button class="btn-table-icon delete" title="Delete Category" onclick="removeCategory('${cat}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function submitNewCategory() {
+      const input = document.getElementById('newCategoryTextInput');
+      const val = input.value.trim();
+      if (!val) return;
+
+      const categories = AkshayaStore.getCategories();
+      if (!categories.includes(val)) {
+        categories.push(val);
+        AkshayaStore.saveCategories(categories);
+        input.value = '';
+        syncDashboard();
+      } else {
+        alert('Category already exists!');
+      }
+    }
+
+    function removeCategory(cat) {
+      if (confirm(`Remove category "${cat}"?`)) {
+        let categories = AkshayaStore.getCategories();
+        categories = categories.filter(c => c !== cat);
+        AkshayaStore.saveCategories(categories);
+        syncDashboard();
+      }
+    }
+
+    /* Notifications Dropdown */
+    function renderNotifications() {
+      const orders = AkshayaStore.getOrders();
+      const list = document.getElementById('notifItemList');
+      const badge = document.getElementById('notifBadgeCounter');
+
+      badge.textContent = orders.length;
+
+      if (orders.length === 0) {
+        list.innerHTML = `<div class="notif-single-item">No recent order notifications</div>`;
+        return;
+      }
+
+      list.innerHTML = orders.slice(0, 5).map(o => `
+        <div class="notif-single-item">
+          <strong>Order #${o.id}</strong> (₹${o.amount})
+          <div style="font-size:11px; color:#475569;">Customer: ${o.customer ? o.customer.name : 'Guest'}</div>
+          <div style="font-size:10.5px; color:#94A3B8;">${o.date || 'Today'} • Status: ${o.status}</div>
+        </div>
+      `).join('');
+    }
+
+    function toggleNotifMenu() {
+      document.getElementById('notifMenu').classList.toggle('show');
+    }
+
+    /* Prototype Demo Actions */
+    function simulateNewIncomingOrder() {
+      const sample = {
+        customer: {
+          name: 'Nageswara Rao M.',
+          phone: '98485 99120',
+          address: 'RTC Colony, Samalkot',
+          landmark: 'Near Water Tank'
+        },
+        items: [
+          { id: 'amp-105', name: 'Neyyi (Desi Ghee)', unit: '500ml', price: 350, qty: 1 },
+          { id: 'amp-101', name: 'Taaja Paalu', unit: '1L', price: 65, qty: 2 }
+        ],
+        amount: 480,
+        paymentMethod: 'UPI (PhonePe)'
+      };
+      AkshayaStore.createOrder(sample);
+      alert('Simulated incoming order from Samalkot! Check the orders table.');
+      syncDashboard();
+    }
+
+    function loadMoreProducts() {
+      AkshayaStore.loadExtendedCatalog();
+      alert('Loaded extended products: Samalkot Palakova, Matka Kulfi, Condensed Milk, Mishti Doi!');
+      syncDashboard();
+    }
+
+    function resetTo10StarterItems() {
+      if (confirm('Reset to initial 10 starter products and demo orders?')) {
+        AkshayaStore.resetDefaults();
+        syncDashboard();
+      }
+    }
+
+    /* =========================================================================
+       ORDER PACKAGE LABEL PRINTING SYSTEM (A6 & 4x6 INCH)
+    ========================================================================= */
+    let currentLabelFormat = 'format-4x6';
+    let activePrintOrderIds = [];
+
+    function openOrderLabelPrintModal(orderId) {
+      activePrintOrderIds = [orderId];
+      renderOrderLabelsPreview();
+      document.getElementById('orderLabelModal').classList.add('active');
+    }
+
+    function printSelectedOrderLabels() {
+      const checkedBoxes = Array.from(document.querySelectorAll('.order-select-chk:checked'));
+      if (checkedBoxes.length === 0) {
+        alert('Please select at least one order to print package labels.');
+        return;
+      }
+      activePrintOrderIds = checkedBoxes.map(chk => chk.value);
+      renderOrderLabelsPreview();
+      document.getElementById('orderLabelModal').classList.add('active');
+    }
+
+    function closeOrderLabelModal() {
+      document.getElementById('orderLabelModal').classList.remove('active');
+    }
+
+    function setLabelFormat(fmt) {
+      currentLabelFormat = fmt;
+      const btn4x6 = document.getElementById('btnFmt4x6');
+      const btnA6 = document.getElementById('btnFmtA6');
+      if (btn4x6) btn4x6.classList.toggle('active', fmt === 'format-4x6');
+      if (btnA6) btnA6.classList.toggle('active', fmt === 'format-a6');
+      renderOrderLabelsPreview();
+    }
+
+    function toggleSelectAllOrders(checked) {
+      document.querySelectorAll('.order-select-chk').forEach(chk => {
+        chk.checked = checked;
+      });
+      updateBatchPrintBtn();
+    }
+
+    function updateBatchPrintBtn() {
+      const checkedCount = document.querySelectorAll('.order-select-chk:checked').length;
+      const btn = document.getElementById('btnBatchPrintLabels');
+      const badge = document.getElementById('batchCountBadge');
+      if (btn && badge) {
+        badge.textContent = checkedCount;
+        btn.style.display = checkedCount > 0 ? 'inline-flex' : 'none';
+      }
+    }
+
+    function renderOrderLabelsPreview() {
+      const container = document.getElementById('orderLabelPreviewBox');
+      const printRoot = document.getElementById('printLabelContainer');
+      const orders = AkshayaStore.getOrders();
+
+      const targetOrders = orders.filter(o => activePrintOrderIds.includes(o.id));
+      if (targetOrders.length === 0) {
+        container.innerHTML = '<div style="padding:20px; text-align:center; color:var(--text-muted);">No orders selected.</div>';
+        printRoot.innerHTML = '';
+        return;
+      }
+
+      const labelsHtml = targetOrders.map(ord => renderSingleLabelMarkup(ord, currentLabelFormat)).join('');
+      container.innerHTML = labelsHtml;
+      printRoot.innerHTML = labelsHtml;
+    }
+
+    function renderSingleLabelMarkup(ord, formatClass) {
+      const customer = ord.customer || {};
+      const isPaid = (ord.paymentStatus || '').toLowerCase().includes('paid') || (!ord.paymentMethod.toLowerCase().includes('cash') && !ord.paymentMethod.toLowerCase().includes('cod'));
+      const paymentStatusText = isPaid ? 'PAID (ONLINE VERIFIED)' : 'COLLECT CASH ON DELIVERY (COD)';
+
+      return `
+        <div class="printable-order-label ${formatClass}">
+          <!-- Brand Header -->
+          <div class="label-brand-header">
+            <div class="label-brand-emblem">🥛</div>
+            <div>
+              <div class="label-brand-title">AKSHAYA MILK PRODUCTS</div>
+              <div class="label-brand-sub">Samalkot, Andhra Pradesh • PIN: 533440</div>
+              <div class="label-brand-tagline">COLD-CHAIN FARM FRESH DAIRY DELIVERY</div>
+            </div>
+          </div>
+
+          <div class="label-divider-heavy"></div>
+
+          <!-- Order & Date Meta -->
+          <div class="label-order-meta-grid">
+            <div>
+              <span class="label-meta-caption">PACKAGE ORDER ID</span>
+              <div class="label-order-id-bold">#${ord.id}</div>
+            </div>
+            <div style="text-align:right;">
+              <span class="label-meta-caption">BOOKING DATE & TIME</span>
+              <div class="label-meta-val">${ord.date || 'Recent'}</div>
+            </div>
+          </div>
+
+          <div class="label-divider-solid"></div>
+
+          <!-- Customer Delivery Details -->
+          <div class="label-section">
+            <div class="label-section-heading">CUSTOMER DELIVERY DETAILS</div>
+            <div class="label-cust-name">${customer.name || 'Valued Customer'}</div>
+            <div class="label-cust-phone">📞 Mobile: <strong>${customer.phone || 'N/A'}</strong></div>
+            <div class="label-cust-address">
+              ${customer.address || 'Local Delivery'}<br>
+              ${customer.landmark ? `Landmark: <strong>${customer.landmark}</strong><br>` : ''}
+              Samalkot, Andhra Pradesh – <strong>${customer.pincode || '533440'}</strong>
+            </div>
+          </div>
+
+          <div class="label-divider-dashed"></div>
+
+          <!-- Package Items Table -->
+          <div class="label-section">
+            <div class="label-section-heading">PACKAGE CONTENTS (${(ord.items || []).length} ITEMS)</div>
+            <table class="label-items-table">
+              <thead>
+                <tr>
+                  <th style="text-align:left;">Item Name</th>
+                  <th style="text-align:center;">Qty</th>
+                  <th style="text-align:center;">Unit</th>
+                  <th style="text-align:right;">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${(ord.items || []).map(i => `
+                  <tr>
+                    <td style="font-weight:700;">${i.name}</td>
+                    <td style="text-align:center; font-weight:800;">${i.qty}</td>
+                    <td style="text-align:center;">${i.unit || 'pack'}</td>
+                    <td style="text-align:right; font-weight:700;">₹${i.price * i.qty}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="label-divider-dashed"></div>
+
+          <!-- Payment Details -->
+          <div class="label-section">
+            <div class="label-section-heading">PAYMENT & SETTLEMENT</div>
+            <div class="label-payment-row">
+              <span style="font-size:12px; color:#475569;">Payment Method:</span>
+              <strong style="font-size:12.5px;">${ord.paymentMethod || 'UPI'}</strong>
+            </div>
+            <div class="label-payment-row">
+              <span style="font-size:12px; color:#475569;">Payment Status:</span>
+              <span class="label-payment-chip ${isPaid ? 'paid' : 'cod'}">
+                ${paymentStatusText}
+              </span>
+            </div>
+            <div class="label-total-row">
+              <span>TOTAL ORDER AMOUNT:</span>
+              <span class="label-total-price">₹${ord.amount}</span>
+            </div>
+          </div>
+
+          <!-- Packaging Barcode Pattern -->
+          <div class="label-barcode-wrap">
+            <svg class="label-barcode-svg" viewBox="0 0 200 36">
+              <rect x="0" y="0" width="3" height="36" fill="#000"/>
+              <rect x="5" y="0" width="2" height="36" fill="#000"/>
+              <rect x="10" y="0" width="4" height="36" fill="#000"/>
+              <rect x="16" y="0" width="1" height="36" fill="#000"/>
+              <rect x="20" y="0" width="3" height="36" fill="#000"/>
+              <rect x="25" y="0" width="2" height="36" fill="#000"/>
+              <rect x="30" y="0" width="5" height="36" fill="#000"/>
+              <rect x="38" y="0" width="2" height="36" fill="#000"/>
+              <rect x="43" y="0" width="3" height="36" fill="#000"/>
+              <rect x="49" y="0" width="4" height="36" fill="#000"/>
+              <rect x="56" y="0" width="2" height="36" fill="#000"/>
+              <rect x="61" y="0" width="3" height="36" fill="#000"/>
+              <rect x="67" y="0" width="1" height="36" fill="#000"/>
+              <rect x="71" y="0" width="4" height="36" fill="#000"/>
+              <rect x="78" y="0" width="2" height="36" fill="#000"/>
+              <rect x="83" y="0" width="5" height="36" fill="#000"/>
+              <rect x="91" y="0" width="2" height="36" fill="#000"/>
+              <rect x="96" y="0" width="3" height="36" fill="#000"/>
+              <rect x="102" y="0" width="1" height="36" fill="#000"/>
+              <rect x="106" y="0" width="4" height="36" fill="#000"/>
+              <rect x="113" y="0" width="2" height="36" fill="#000"/>
+              <rect x="118" y="0" width="3" height="36" fill="#000"/>
+              <rect x="124" y="0" width="4" height="36" fill="#000"/>
+              <rect x="131" y="0" width="2" height="36" fill="#000"/>
+              <rect x="136" y="0" width="3" height="36" fill="#000"/>
+              <rect x="142" y="0" width="5" height="36" fill="#000"/>
+              <rect x="150" y="0" width="2" height="36" fill="#000"/>
+              <rect x="155" y="0" width="3" height="36" fill="#000"/>
+              <rect x="161" y="0" width="1" height="36" fill="#000"/>
+              <rect x="165" y="0" width="4" height="36" fill="#000"/>
+              <rect x="172" y="0" width="2" height="36" fill="#000"/>
+              <rect x="177" y="0" width="3" height="36" fill="#000"/>
+              <rect x="183" y="0" width="4" height="36" fill="#000"/>
+              <rect x="190" y="0" width="2" height="36" fill="#000"/>
+              <rect x="195" y="0" width="3" height="36" fill="#000"/>
+            </svg>
+            <div class="label-barcode-text">* ${ord.id} *</div>
+          </div>
+
+          <div class="label-footer-msg">
+            Thank you for shopping with us!<br>
+            Akshaya Dairy Hub, Samalkot • Keep Refrigerated below 4°C
+          </div>
+        </div>
+      `;
+    }
+
+    function triggerPrintLabel() {
+      window.print();
+    }
+  </script>
+</body>
+</html>
